@@ -1,6 +1,4 @@
 ## Project: Search and Sample Return
-### Writeup Template: You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
-
 ---
 
 
@@ -27,7 +25,6 @@
 [image3]: ./calibration_images/example_rock1.jpg 
 
 ## [Rubric](https://review.udacity.com/#!/rubrics/916/view) Points
-### Here I will consider the rubric points individually and describe how I addressed each point in my implementation.  
 
 ---
 ### Writeup / README
@@ -42,14 +39,14 @@ This is it!
 * Modified `color_thresh` function to filter for rock samples and obstacles in addition to navigable terrain.  For rock samples (yellow), the filter was: not navigable, pixel R value > 100, pixel R and G values approximately equal (0.8 to 1.2 ratio allowable), and pixel B value less than half of the pixel R value.  For obstacles, the filter was: not navigable, not a rock sample, R+G+B > 0 to avoid labeling the unseen areas out of view of the camera but present on the warped image, and R, G, B &lt; 100.  Rock filter output for the rock sample image was plotted to ensure the yellow filter worked correctly. 
 * Completed coordinate transform functions for `rotate_pix` and `translate_pix`
 
-![Warped Rock][writeup_img/rockwarp.png]
-![Filtered Rock][writeup_img/rockfilter.png]
+![Warped Rock](writeup_img/rockwarp.png)
+![Filtered Rock](writeup_img/rockfilter.png)
 
 #### 1. Populate the `process_image()` function with the appropriate analysis steps to map pixels identifying navigable terrain, obstacles and rock samples into a worldmap.  Run `process_image()` on your test data using the `moviepy` functions provided to create video output of your result. 
 * Populated process_image function by defining source and destination points for perspective transform, applying the transform, feeding the transform through the `color_thresh` function above, and writing a worldcoord function to transform rover map view (warped) coordinates to world coordinates.  Then used binary thresholds data for navigable, rocks, and obstacles to update data.worldmap and generate a combined warped threshold image.  For the worldmap update, RGB values were restricted to an upper bound of 255 to avoid rendering problems for frequently visited areas.
 * Original image, threshold view, and worldmap overlay on ground truth map were all shown on the output video mosaicatom.
 
-![Last Frame][writeup_img/videoframe.png]
+![Last Frame](writeup_img/videoframe.png)
 
 ### Autonomous Navigation and Mapping
 
@@ -67,7 +64,7 @@ This is it!
 
 * Rover is routinely capable of mapping 75-95% of the world with 60-70% fidelity, retrieving 4-5 rocks.  However, the current iteration is very very slow because navigation by decision tree is very inefficient, and the rover is prone to retracing its steps and taking a long time to extract itself from obstacles.
 
-![Autonomous][writeup_img/auto.png]
+![Autonomous](writeup_img/auto.png)
 
 * The navigation technique used was rudimentary left-hand-on-wall tracing.  This generally performed well with two exceptions.  One, the rover would become trapped in a perpetual left turning donut if it was in a wide-open space, so the self.angle_ct counter and a donut breaking statement had to be hard coded.  Two, because the rover would abandon its route to head towards any rock sample in view, this would occasionally cause the rover to collect a rock and u-turn prematurely, leading to incomplete mapping of the path it had been traveling.
 
