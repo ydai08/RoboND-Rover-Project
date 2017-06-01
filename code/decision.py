@@ -140,9 +140,9 @@ def decision_step(Rover):
                     Rover.brake = Rover.brake_set
                     Rover.steer= rock_ang
             # Rover still too far for pickup
-            # If rover is stuck, look for nav terrain
+            # If rover is stuck, reverse
             elif (Rover.vel <= 0):
-                Rover.mode = 'stop'
+                Rover.mode = 'reverse'
             # Otherwise move towards the rock
             else:
                 # If velocity > 1m/s, slow down

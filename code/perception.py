@@ -152,20 +152,12 @@ def perception_step(Rover):
         Rover.worldmap[obs_ypix_world, obs_xpix_world, 0] += 1
         Rover.worldmap[:,:,:] = np.clip(Rover.worldmap[:,:,:], 0, 255)
 
-    '''MAPPING ONLY, NO ROCK PICKUP'''
-    #angle_select = nav_select
-
-    '''TO ENABLE ROCK PICKUP'''
     # When rover is in view of a rock sample, restrict nav angles to rock pixels
     # only and initiate retrieval mode
-    if np.sum(rock_select) > 10:
+    if (np.sum(rock_select) > 10):
         angle_select = rock_select
         Rover.mode = 'rock'
-    # If rover is in rock mode but does not see the sample, go forward
-    elif Rover.mode == 'rock':
-        Rover.mode = 'forward'
-        angle_select = nav_select
-    # When no rock sample is in sight, use all nav pixels to calculate nav angles
+    # Otherwise use all nav pixels to calculate nav angles
     else:
         angle_select = nav_select
 
