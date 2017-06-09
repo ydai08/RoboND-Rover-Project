@@ -126,8 +126,8 @@ def perception_step(Rover):
     Rover.vision_image[:,:,1] = rock_select *255
     Rover.vision_image[:,:,2] = nav_select *255
 
-    # When roll and pitch are near zero, map navigable, obstacles, rocks to worldmap
-    if (Rover.pitch % 360 < 1) and (Rover.roll % 360 < 1.5):
+    # When roll and pitch are near zero and rover is moving, log to worldmap
+    if (Rover.pitch % 360 < 1) and (Rover.roll % 360 < 1) and (Rover.vel > 0):
         def worldcoord(thresh):
             # 5) Convert map image pixel values to rover-centric coords
             # 6) Convert rover-centric pixel values to world coordinates
@@ -158,7 +158,7 @@ def perception_step(Rover):
     '''TO ENABLE ROCK PICKUP'''
     # When rover is in view of a rock sample or flags near, restrict nav angles
     # to rock pixels only and initiate retrieval mode
-    if np.sum(rock_select) > 10 or Rover.near_sample:
+    if np.sum(rock_select) > 2 or Rover.near_sample:
         angle_select = rock_select
         Rover.mode = 'rock'
     # If rover is in rock mode but does not see rock, go forward

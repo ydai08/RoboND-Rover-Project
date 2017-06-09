@@ -21,7 +21,7 @@ def decision_step(Rover):
 
         else:
             # Calculate average angle for steering, bias to the left
-            steer_ang = np.mean(np.sort(Rover.nav_angles)[int(.75*len(Rover.nav_angles)):]) * 180/np.pi
+            steer_ang = np.mean(np.sort(Rover.nav_angles)[int(.65*len(Rover.nav_angles)):]) * 180/np.pi
             # Calculate average angle for retrieving rock, no bias
             rock_ang = np.clip(np.mean(Rover.nav_angles) * 180/np.pi,-15,15)
 
@@ -140,14 +140,14 @@ def decision_step(Rover):
                     Rover.brake = Rover.brake_set
                     Rover.steer= rock_ang
             # Rover still too far for pickup
-            # If rover is stuck, reverse
+            # If rover is stuck, stop and look for navigable terrain
             elif (Rover.vel <= 0):
-                Rover.mode = 'reverse'
+                Rover.mode = 'stop'
             # Otherwise move towards the rock
             else:
                 # If velocity > 1m/s, slow down
                 if Rover.vel > 1:
-                    Rover.throttle = -Rover.throttle_set/2
+                    Rover.throttle = -Rover.throttle_set
                 # Otherwise increase speed
                 else:
                     Rover.throttle = Rover.throttle_set
